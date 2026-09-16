@@ -1,43 +1,92 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+# ==========================================
+# Snazzyfit .gitignore
+# Covers Expo/React Native, Android, Node.js Backend
+# ==========================================
 
-# dependencies
+# --- Dependencies ---
 node_modules/
+*/node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
 
-# Expo
+# --- Environment & Sensitive Secret Files ---
+.env
+.env.*
+*.env
+!.env.example
+!*/.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+
+# --- Expo & Metro ---
 .expo/
+*/.expo/
 dist/
 web-build/
 expo-env.d.ts
-
-# Native
-.kotlin/
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-
-# Metro
 .metro-health-check*
 
-# debug
+# --- Android Build & Cache ---
+/android
+android/
+.gradle/
+build/
+bin/
+gen/
+out/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+local.properties
+key.properties
+google-services.json
+
+# --- iOS Build & Cache ---
+/ios
+ios/
+Pods/
+*.ipa
+GoogleService-Info.plist
+
+# --- TypeScript ---
+*.tsbuildinfo
+
+# --- Logs & Debugging ---
+*.log
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+pnpm-debug.*
 
-# macOS
+# --- IDEs & OS Files ---
 .DS_Store
-*.pem
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.claude/
+.idea/
+*.iml
+*.iws
+*.ipr
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
 
-# local env files
-.env*.local
-
-# typescript
-*.tsbuildinfo
-
-example
-
-# generated native folders
-/ios
-/android
+# --- Temporary & Scratch ---
+.temp/
+tmp/
+temp/
+scratch/
+example/
