@@ -146,6 +146,20 @@ export default function ProfileScreen() {
           </View>
         </View>
 
+        {/* Quick Actions / Orders Link */}
+        <Pressable
+          onPress={() => router.push('/orders' as any)}
+          style={[styles.ordersShortcutCard, { backgroundColor: theme.backgroundElement }]}>
+          <Text style={styles.ordersShortcutIcon}>📦</Text>
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <Text style={[styles.ordersShortcutTitle, { color: theme.text }]}>My Orders</Text>
+            <Text style={[styles.ordersShortcutSubtitle, { color: theme.textSecondary }]}>
+              Track deliveries, view past purchases and receipts
+            </Text>
+          </View>
+          <Text style={[styles.ordersShortcutArrow, { color: theme.textSecondary }]}>→</Text>
+        </Pressable>
+
         {/* Address Book Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -310,7 +324,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: Spacing.four,
     borderRadius: 16,
+    marginBottom: Spacing.four,
+  },
+  ordersShortcutCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: Spacing.four,
+    borderRadius: 16,
     marginBottom: Spacing.five,
+  },
+  ordersShortcutIcon: {
+    fontSize: 28,
+  },
+  ordersShortcutTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  ordersShortcutSubtitle: {
+    fontSize: 12,
+  },
+  ordersShortcutArrow: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginLeft: Spacing.two,
   },
   avatarCircle: {
     width: 60,

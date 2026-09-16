@@ -16,6 +16,7 @@ import { useProductDetail } from '@/hooks/useProducts';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/theme';
 import { Button } from '@/components/ui/Button';
+import { ProductReviews } from '@/components/product/ProductReviews';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { userService } from '@/services/api/userService';
@@ -249,6 +250,9 @@ export default function ProductDetailScreen() {
               {product.description}
             </Text>
           </View>
+
+          {/* Customer Reviews Section */}
+          <ProductReviews productId={product._id} />
         </View>
       </ScrollView>
 
