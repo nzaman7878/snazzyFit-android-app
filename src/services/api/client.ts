@@ -1,8 +1,41 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 import { TokenStorage } from '../storage/tokenStorage';
 
-const DEFAULT_API_URL = 'http://10.0.2.2:4000/api';
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || DEFAULT_API_URL;
+/**
+ * Dynamically resolves the API base URL depending on runtime environment:
+ * - Web Browser: http://localhost:4000/api (or window.location.hostname)
+ * - Physical Device (Expo Go): extracts host machine LAN IP from Constants.expoConfig?.hostUri
+ * - Android Emulator: http://10.0.2.2:4000/api
+ * - iOS Simulator / Default: http://localhost:4000/api
+ */
+export function getApiBaseUrl(): string {
+  if (Platform.OS === 'web') {
+    if (typeof window !== 'undefined' && window.location?.hostname) {
+      return `http://${window.location.hostname}:4000/api`;
+    }
+    return 'http://localhost:4000/api';
+  }
+
+  // If running in Expo Go or custom dev client on a physical phone, hostUri contains developer PC IP
+  const hostUri = Constants.expoConfig?.hostUri;
+  if (hostUri) {
+    const hostIp = hostUri.split(':')[0];
+    if (hostIp && hostIp !== 'localhost' && hostIp !== '127.0.0.1') {
+      return `http://${hostIp}:4000/api`;
+    }
+  }
+
+  // Explicit env var fallback if set and not 10.0.2.2 on non-emulator
+  if (process.env.EXPO_PUBLIC_API_URL && !process.env.EXPO_PUBLIC_API_URL.includes('10.0.2.2')) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
+
+  return Platform.OS === 'android' ? 'http://10.0.2.2:4000/api' : 'http://localhost:4000/api';
+}
+
+const API_BASE_URL = getApiBaseUrl();
 const REQUEST_TIMEOUT = Number(process.env.EXPO_PUBLIC_REQUEST_TIMEOUT) || 15000;
 
 export class AppApiError extends Error {

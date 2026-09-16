@@ -29,16 +29,25 @@ connectCloudinary();
 app.use(express.json());
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',') 
-  : ['http://localhost:5173', 'http://localhost:5174'];
+  : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:8081', 'http://localhost:8082', 'http://localhost:19006'];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true)
+    // Allow requests with no origin (like mobile apps, curl) or allowed origins or any localhost/127.0.0.1 port
+    if (
+      !origin ||
+      allowedOrigins.indexOf(origin) !== -1 ||
+      /^http:\/\/localhost:\d+$/.test(origin) ||
+      /^http:\/\/127\.0\.0\.1:\d+$/.test(origin) ||
+      /^http:\/\/192\.168\.\d+\.\d+:\d+$/.test(origin) ||
+      /^http:\/\/10\.0\.2\.2:\d+$/.test(origin)
+    ) {
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error('Not allowed by CORS'));
     }
-  }
+  },
+  credentials: true
 }));
 
 // Set security HTTP headers

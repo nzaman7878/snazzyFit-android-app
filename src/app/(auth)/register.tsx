@@ -56,7 +56,7 @@ export default function RegisterScreen() {
         password,
       });
       Alert.alert('Success', 'Account created successfully!');
-      router.replace('/');
+      router.replace('/' as any);
     } catch (error: any) {
       const msg = error?.message || 'Registration failed. Please try again.';
       setErrorMessage(msg);

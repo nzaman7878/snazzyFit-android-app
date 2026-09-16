@@ -33,7 +33,7 @@ export default function OrderSuccessScreen() {
           <Button
             title="Continue Shopping"
             variant="outline"
-            onPress={() => router.replace('/')}
+            onPress={() => router.replace('/' as any)}
             style={styles.actionBtn}
           />
         </View>

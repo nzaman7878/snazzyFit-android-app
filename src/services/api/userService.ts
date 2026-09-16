@@ -14,7 +14,7 @@ export const userService = {
    * Fetch authenticated user's profile from database
    */
   async getProfile(): Promise<User> {
-    const response = await apiClient.post<{ success: boolean; user: User }>('/user/profile/get');
+    const response = await apiClient.post<{ success: boolean; user: User }>('/user/profile/get', {});
     return response.data.user;
   },
 

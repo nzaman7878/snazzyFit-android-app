@@ -37,7 +37,7 @@ export default function LoginScreen() {
     try {
       await login({ email: email.trim(), password });
       // Redirect to main tabs upon successful login
-      router.replace('/');
+      router.replace('/' as any);
     } catch (error: any) {
       const msg = error?.message || 'Login failed. Please verify credentials.';
       setErrorMessage(msg);
