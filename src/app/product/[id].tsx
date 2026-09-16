@@ -17,6 +17,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/theme';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { userService } from '@/services/api/userService';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -26,12 +27,14 @@ export default function ProductDetailScreen() {
   const router = useRouter();
   const theme = useTheme();
   const { isAuthenticated } = useAuth();
+  const { addToCart } = useCart();
 
   const { data: product, isLoading, error } = useProductDetail(id as string);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   if (isLoading) {
     return (
@@ -77,7 +80,7 @@ export default function ProductDetailScreen() {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!selectedSize) {
       Alert.alert('Select Size', 'Please choose your preferred size before adding to cart.');
       return;
@@ -89,22 +92,22 @@ export default function ProductDetailScreen() {
       return;
     }
 
-    if (!isAuthenticated) {
-      Alert.alert('Sign In Required', 'Please sign in to add items to your cart.', [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Sign In', onPress: () => router.push('/(auth)/login') },
-      ]);
-      return;
+    setAddingToCart(true);
+    try {
+      await addToCart(product._id, selectedSize);
+      Alert.alert(
+        'Added to Cart!',
+        `${product.name} (Size ${selectedSize}) was added to your cart.`,
+        [
+          { text: 'Continue Shopping' },
+          { text: 'View Cart', onPress: () => router.push('/cart' as any) },
+        ]
+      );
+    } catch (err: any) {
+      Alert.alert('Error', err?.message || 'Could not add to cart');
+    } finally {
+      setAddingToCart(false);
     }
-
-    Alert.alert(
-      'Added to Cart!',
-      `${product.name} (Size ${selectedSize}) was added to your cart.`,
-      [
-        { text: 'Continue Shopping' },
-        { text: 'Go to Cart', onPress: () => router.push('/(tabs)/cart' as any) },
-      ]
-    );
   };
 
   return (

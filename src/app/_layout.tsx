@@ -6,6 +6,7 @@ import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import AppTabs from '@/components/app-tabs';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { AuthProvider } from '@/context/AuthContext';
+import { CartProvider } from '@/context/CartContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -14,10 +15,12 @@ export default function TabLayout() {
   return (
     <QueryProvider>
       <AuthProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <AnimatedSplashOverlay />
-          <AppTabs />
-        </ThemeProvider>
+        <CartProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <AnimatedSplashOverlay />
+            <AppTabs />
+          </ThemeProvider>
+        </CartProvider>
       </AuthProvider>
     </QueryProvider>
   );
