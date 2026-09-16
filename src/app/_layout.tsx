@@ -7,6 +7,8 @@ import AppTabs from '@/components/app-tabs';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { AuthProvider } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
+import { OfflineBanner } from '@/components/ui/OfflineBanner';
+import { StatusBar } from 'expo-status-bar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,6 +19,8 @@ export default function TabLayout() {
       <AuthProvider>
         <CartProvider>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+            <OfflineBanner />
             <AnimatedSplashOverlay />
             <AppTabs />
           </ThemeProvider>
